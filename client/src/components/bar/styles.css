@@ -1,0 +1,40 @@
+.vote__container {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.vote__value {
+  width: 25px;
+  margin: 5px;
+}
+
+.vote__bar {
+  border: 1px solid;
+  height: 50px;
+  transition: background-color, 0.5s;
+}
+
+input {
+  -webkit-appearance: none;
+  border: 1px solid #cacece;
+  padding: 9px;
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  outline: none;
+}
+
+input:checked {
+  border: 1px solid #adb8c0;
+  color: #99a1a7;
+}
+
+input:checked:after {
+  content: "\2714";
+  font-size: 10px;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  font-size: 13px;
+}

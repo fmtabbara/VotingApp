@@ -1,0 +1,14 @@
+#root {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  font-family: calibri;
+}
+
+.App {
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+}

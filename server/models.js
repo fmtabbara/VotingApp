@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 //Create Schema
 const PartySchema = new Schema({
-  name: Schema.Types.String,
-  votes: Schema.Types.Number,
+  name: {type: String},
+  votes: {type: Number},
 });
 
-module.exports = Profile = mongoose.model('party', PartySchema);
+module.exports = Party = mongoose.model('party', PartySchema);
