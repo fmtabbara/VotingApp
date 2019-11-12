@@ -1,10 +1,10 @@
 import React from 'react';
-import Bar from './components/bar/bar'
+import Bar from './components/bar/bar';
 import './App.css';
 
 export const parties = {
   LABOUR: "LABOUR",
-  CONSERVATIVE: "CONSERVATIVE",
+  CONSERVATIVES: "CONSERVATIVES",
   LIBDEMS: "LIBDEMS"
 };
 
@@ -19,14 +19,14 @@ function App() {
   const [voteYellow, handleVoteYellow] = React.useState(1);
   const [isDisabled, handleIsDisabled] = React.useState({
     LABOUR: false,
-    CONSERVATIVE: false,
+    CONSERVATIVES: false,
     LIBDEMS: false
   });
 
   const addVote = (value, party) => {
     if (party === parties.LABOUR) {
       return handleVoteRed(voteRed + value);
-    } else if (party === parties.CONSERVATIVE) {
+    } else if (party === parties.CONSERVATIVES) {
       return handleVoteBlue(voteBlue + value);
     } else if (party === parties.LIBDEMS) {
       handleVoteYellow(voteYellow + value);
@@ -58,31 +58,35 @@ function App() {
   };
   return (
     <div className="App">
-      <h2>Who's getting your vote this election?</h2>
-      <Bar
-        isDisabled={isDisabled.CONSERVATIVE}
-        addVote={handleSelect}
-        party={parties.CONSERVATIVE}
-        vote={voteBlue}
-        background="blue"
-        value={(voteBlue / total) * weight}
-      />
-      <Bar
-        isDisabled={isDisabled.LABOUR}
-        addVote={handleSelect}
-        party={parties.LABOUR}
-        background="red"
-        vote={voteRed}
-        value={(voteRed / total) * weight}
-      />
-      <Bar
-        isDisabled={isDisabled.LIBDEMS}
-        addVote={handleSelect}
-        party={parties.LIBDEMS}
-        vote={voteYellow}
-        background="orange"
-        value={(voteYellow / total) * weight}
-      />
+      <div className="content" style={{left: weight/4}}>
+        <div className="title">The People's Poll</div>
+        <div className="bar-chart">
+          <Bar
+            isDisabled={isDisabled.CONSERVATIVES}
+            addVote={handleSelect}
+            party={parties.CONSERVATIVES}
+            vote={voteBlue}
+            background="#0066ff"
+            value={(voteBlue / total) * weight}
+          />
+          <Bar
+            isDisabled={isDisabled.LABOUR}
+            addVote={handleSelect}
+            party={parties.LABOUR}
+            background="#E4003B"
+            vote={voteRed}
+            value={(voteRed / total) * weight}
+          />
+          <Bar
+            isDisabled={isDisabled.LIBDEMS}
+            addVote={handleSelect}
+            party={parties.LIBDEMS}
+            vote={voteYellow}
+            background="#FFAE27"
+            value={(voteYellow / total) * weight}
+          />
+        </div>
+      </div>
     </div>
   );
 }

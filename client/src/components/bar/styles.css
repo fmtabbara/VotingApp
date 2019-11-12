@@ -9,9 +9,13 @@
   margin: 5px;
 }
 
+.vote__party {
+  font-size: 15px;
+}
+
 .vote__bar {
   border: 1px solid;
-  height: 50px;
+  height: 20px;
   transition: background-color, 0.5s;
 }
 
