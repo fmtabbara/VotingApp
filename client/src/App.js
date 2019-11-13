@@ -11,6 +11,11 @@ export const parties = {
 function App() {
   React.useEffect(() => {
     setWeight(window.innerWidth);
+    fetch("http://localhost:4001/")
+      .then(res => {
+        res.json()
+          .then(data => console.log(data))
+      })
   }, []);
   const [weight, setWeight] = React.useState(0);
   const [total, handleTotal] = React.useState(6);

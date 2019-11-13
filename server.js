@@ -1,18 +1,21 @@
 const express = require ('express');
 const mongoose = require('mongoose');
-const db = require('./server/config').DB_URI;
 const Party = require('./server/models');
+require('dotenv').config();
 
+const PORT = process.env.PORT || 4001;
+const db = process.env.MONGO_URI;
 const app = express();
-const PORT = 3000;
 
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
 
 app.get('/', (req, res) => {
-  Party.find({name: "Labour"}, (err, res) => {
-    console.log(res)
+  Party.find({}, (err, data) => {
+    if (data) {
+      res.send(data);
+    }
   })
 })
 
