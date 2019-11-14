@@ -11,6 +11,7 @@ export const parties = {
 function App() {
   React.useEffect(() => {
     setWeight(window.innerWidth);
+<<<<<<< HEAD
     fetch("http://localhost:4001/data", {Accept: "application/json"})
       .then(res => {
         res.json()
@@ -28,6 +29,13 @@ function App() {
           .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
+=======
+    fetch("http://localhost:4001/")
+      .then(res => {
+        res.json()
+          .then(data => console.log(data))
+      })
+>>>>>>> 051f1feca927a3fadf7198040a348fce1effbfe8
   }, []);
   React.useEffect(() => {
     const total = voteRed + voteBlue + voteYellow;
