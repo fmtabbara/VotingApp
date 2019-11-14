@@ -7,8 +7,9 @@
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "build": "babel server -d dist",
     "heroku-postbuild":
-      "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build && cd .. && npm run build",
+      "cd client && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
