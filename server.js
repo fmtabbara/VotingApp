@@ -9,7 +9,7 @@ const db = process.env.MONGO_URI;
 const app = express();
 
 app.use(bodyParser.json());
-
+app.use(express.static('public'));
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
