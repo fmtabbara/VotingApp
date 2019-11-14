@@ -11,49 +11,55 @@ export const parties = {
 function App() {
   React.useEffect(() => {
     setWeight(window.innerWidth);
+    fetch("http://localhost:4001/data", {Accept: "application/json"})
+      .then(res => {
+        res.json()
+          .then(data => {
+            data.forEach(item => {
+              if (item.name === "Labour") {
+                handleVoteRed(item.votes)
+              } else if (item.name === "Conservatives") {
+                handleVoteBlue(item.votes)
+              } else if (item.name === "Lib Dems") {
+                handleVoteYellow(item.votes)
+              }
+            })
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   }, []);
+  React.useEffect(() => {
+    const total = voteRed + voteBlue + voteYellow;
+    console.log(total)
+    handleTotal(total)
+  }, [])
   const [weight, setWeight] = React.useState(0);
-  const [total, handleTotal] = React.useState(6);
-  const [voteRed, handleVoteRed] = React.useState(3);
-  const [voteBlue, handleVoteBlue] = React.useState(2);
+  const [total, handleTotal] = React.useState(1);
+  const [voteRed, handleVoteRed] = React.useState(1);
+  const [voteBlue, handleVoteBlue] = React.useState(1);
   const [voteYellow, handleVoteYellow] = React.useState(1);
-  const [isDisabled, handleIsDisabled] = React.useState({
-    LABOUR: false,
-    CONSERVATIVES: false,
-    LIBDEMS: false
-  });
+  const [isDisabled, handleIsDisabled] = React.useState(false)
 
-  const addVote = (value, party) => {
+  const addVote = (party) => {
     if (party === parties.LABOUR) {
-      return handleVoteRed(voteRed + value);
+      return handleVoteRed(voteRed + 1);
     } else if (party === parties.CONSERVATIVES) {
-      return handleVoteBlue(voteBlue + value);
+      return handleVoteBlue(voteBlue + 1);
     } else if (party === parties.LIBDEMS) {
-      handleVoteYellow(voteYellow + value);
+      handleVoteYellow(voteYellow + 1);
     }
   };
 
   const setDisabled = party => {
-    const newState = { ...isDisabled };
-    for (let name in newState) {
-      if (name !== party) {
-        newState[name] = !newState[name];
-      } else {
-        newState[name] = false;
-      }
-    }
-    handleIsDisabled(newState);
+    handleIsDisabled(true);
   };
 
   const handleSelect = ({ target: { name, checked } }) => {
     if (checked) {
       handleTotal(total + 1);
-      addVote(1, name);
-      setDisabled(name);
-    } else {
-      handleTotal(total - 1);
-      addVote(-1, name);
-      setDisabled(name);
+      addVote(name);
+      setDisabled(true);
     }
   };
   return (
@@ -62,7 +68,7 @@ function App() {
         <div className="title">The People's Poll</div>
         <div className="bar-chart">
           <Bar
-            isDisabled={isDisabled.CONSERVATIVES}
+            isDisabled={isDisabled}
             addVote={handleSelect}
             party={parties.CONSERVATIVES}
             vote={voteBlue}
@@ -70,7 +76,7 @@ function App() {
             value={(voteBlue / total) * weight}
           />
           <Bar
-            isDisabled={isDisabled.LABOUR}
+            isDisabled={isDisabled}
             addVote={handleSelect}
             party={parties.LABOUR}
             background="#E4003B"
@@ -78,7 +84,7 @@ function App() {
             value={(voteRed / total) * weight}
           />
           <Bar
-            isDisabled={isDisabled.LIBDEMS}
+            isDisabled={isDisabled}
             addVote={handleSelect}
             party={parties.LIBDEMS}
             vote={voteYellow}
