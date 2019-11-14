@@ -8,58 +8,65 @@ export const parties = {
   LIBDEMS: "LIBDEMS"
 };
 
+const makeRequest = (party) => {
+  const opts = {
+    method:"POST",
+    headers: { 'Content-type': 'application/json'},
+    body: JSON.stringify({party}),
+  }
+  fetch("http://localhost:4001/", opts)
+    .then(res => console.log(res.ok))
+    .catch(err => console.log(err))
+}
+
 function App() {
   React.useEffect(() => {
-    setWeight(window.innerWidth);
-<<<<<<< HEAD
-    fetch("http://localhost:4001/data", {Accept: "application/json"})
+    fetch("http://localhost:4001/", {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {
+            let totalVotes = 0;
             data.forEach(item => {
-              if (item.name === "Labour") {
+              if (item.name === parties.LABOUR) {
                 handleVoteRed(item.votes)
-              } else if (item.name === "Conservatives") {
+                totalVotes += item.votes
+              } else if (item.name === parties.CONSERVATIVES) {
                 handleVoteBlue(item.votes)
-              } else if (item.name === "Lib Dems") {
+                totalVotes += item.votes
+              } else if (item.name === parties.LIBDEMS) {
                 handleVoteYellow(item.votes)
+                totalVotes += item.votes
               }
             })
+            handleTotal(totalVotes);
           })
           .catch(err => console.log(err));
+          handleIsInitialised(true)
       })
       .catch(err => console.log(err));
-=======
-    fetch("http://localhost:4001/")
-      .then(res => {
-        res.json()
-          .then(data => console.log(data))
-      })
->>>>>>> 051f1feca927a3fadf7198040a348fce1effbfe8
   }, []);
-  React.useEffect(() => {
-    const total = voteRed + voteBlue + voteYellow;
-    console.log(total)
-    handleTotal(total)
-  }, [])
-  const [weight, setWeight] = React.useState(0);
-  const [total, handleTotal] = React.useState(1);
-  const [voteRed, handleVoteRed] = React.useState(1);
-  const [voteBlue, handleVoteBlue] = React.useState(1);
-  const [voteYellow, handleVoteYellow] = React.useState(1);
+  const weight = window.innerWidth
+  const [isInitialised, handleIsInitialised] = React.useState(false)
+  const [total, handleTotal] = React.useState(0);
+  const [voteRed, handleVoteRed] = React.useState(0);
+  const [voteBlue, handleVoteBlue] = React.useState(0);
+  const [voteYellow, handleVoteYellow] = React.useState(0);
   const [isDisabled, handleIsDisabled] = React.useState(false)
 
   const addVote = (party) => {
     if (party === parties.LABOUR) {
+      makeRequest(parties.LABOUR)
       return handleVoteRed(voteRed + 1);
     } else if (party === parties.CONSERVATIVES) {
+      makeRequest(parties.CONSERVATIVES)
       return handleVoteBlue(voteBlue + 1);
     } else if (party === parties.LIBDEMS) {
+      makeRequest(parties.LIBDEMS)
       handleVoteYellow(voteYellow + 1);
     }
   };
 
-  const setDisabled = party => {
+  const setDisabled = () => {
     handleIsDisabled(true);
   };
 
@@ -74,6 +81,7 @@ function App() {
     <div className="App">
       <div className="content" style={{left: weight/4}}>
         <div className="title">The People's Poll</div>
+        {isInitialised ?
         <div className="bar-chart">
           <Bar
             isDisabled={isDisabled}
@@ -100,6 +108,7 @@ function App() {
             value={(voteYellow / total) * weight}
           />
         </div>
+        : "Loading..."}
       </div>
     </div>
   );

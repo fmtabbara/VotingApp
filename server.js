@@ -1,16 +1,18 @@
 const express = require ('express');
 const mongoose = require('mongoose');
 const Party = require('./server/models');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 4001;
 const db = process.env.MONGO_URI;
 const app = express();
 
+app.use(bodyParser.json());
+
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
-
 
 app.get('/', (req, res) => {
   Party.find({}, (err, data) => {
@@ -18,6 +20,18 @@ app.get('/', (req, res) => {
       res.send(data);
     }
   })
-})
+});
+
+app.post('/', (req, res) => {
+  const party = req.body.party;
+  Party.findOneAndUpdate({name: party}, {$inc: {votes: 1}}, (err, success) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send("There was an error updating the database")
+    } else {
+      res.send({success: true})
+    }
+  });
+});
 
 app.listen(PORT, console.log(`Server is running on port: ${PORT}`))
