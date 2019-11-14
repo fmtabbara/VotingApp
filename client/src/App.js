@@ -16,14 +16,14 @@ const makeRequest = (party) => {
     headers: { 'Content-type': 'application/json'},
     body: JSON.stringify({party}),
   }
-  fetch(`http://localhost:${PORT}/`, opts)
+  fetch("/", opts)
     .then(res => res.ok)
     .catch(err => console.log(err))
 }
 
 function App() {
   React.useEffect(() => {
-    fetch(`http://localhost:${PORT}/`, {Accept: "application/json"})
+    fetch("/", {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {
