@@ -26,7 +26,6 @@ app.post('/', (req, res) => {
   const party = req.body.party;
   Party.findOneAndUpdate({name: party}, {$inc: {votes: 1}}, (err, success) => {
     if (err) {
-      console.log(err)
       res.status(500).send("There was an error updating the database")
     } else {
       res.send({success: true})

@@ -2,6 +2,8 @@ import React from 'react';
 import Bar from './components/bar/bar';
 import './App.css';
 
+const PORT = process.env.PORT || 4001;
+
 export const parties = {
   LABOUR: "LABOUR",
   CONSERVATIVES: "CONSERVATIVES",
@@ -14,14 +16,14 @@ const makeRequest = (party) => {
     headers: { 'Content-type': 'application/json'},
     body: JSON.stringify({party}),
   }
-  fetch("http://localhost:4001/", opts)
-    .then(res => console.log(res.ok))
+  fetch(`http://localhost:${PORT}/`, opts)
+    .then(res => res.ok)
     .catch(err => console.log(err))
 }
 
 function App() {
   React.useEffect(() => {
-    fetch("http://localhost:4001/", {Accept: "application/json"})
+    fetch(`http://localhost:${PORT}/`, {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {
@@ -47,7 +49,7 @@ function App() {
   }, []);
   const weight = window.innerWidth
   const [isInitialised, handleIsInitialised] = React.useState(false)
-  const [total, handleTotal] = React.useState(0);
+  const [total, handleTotal] = React.useState(1);
   const [voteRed, handleVoteRed] = React.useState(0);
   const [voteBlue, handleVoteBlue] = React.useState(0);
   const [voteYellow, handleVoteYellow] = React.useState(0);
