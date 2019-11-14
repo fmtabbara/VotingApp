@@ -9,6 +9,9 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "9.11.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fmtabbara/VotingApp.git"
