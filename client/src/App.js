@@ -1,5 +1,6 @@
 import React from 'react';
 import Bar from './components/bar/bar';
+import { ShareButtons } from './components/shareButtons/shareButtons';
 import { partiesReducer, initialState, LOAD_DATA, ADD_VOTE } from './reducer';
 import './App.css';
 
@@ -85,6 +86,7 @@ function App() {
         </div>
         : "Loading..."}
       </div>
+      <ShareButtons />
     </div>
   );
 }
