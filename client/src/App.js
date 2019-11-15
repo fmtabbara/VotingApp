@@ -2,8 +2,6 @@ import React from 'react';
 import Bar from './components/bar/bar';
 import './App.css';
 
-const PORT = process.env.PORT || 4001;
-
 export const parties = {
   LABOUR: "LABOUR",
   CONSERVATIVES: "CONSERVATIVES",
