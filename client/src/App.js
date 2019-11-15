@@ -12,6 +12,7 @@ export const enumParties = {
   GREEN: "GREEN",
   BREXIT: "BREXIT",
   OTHER: "OTHER",
+
 };
 
 function App() {
@@ -45,7 +46,6 @@ function App() {
       .catch(err => console.log(err))
   };
   
-
   const setDisabled = () => {
     handleIsDisabled(true);
   };
