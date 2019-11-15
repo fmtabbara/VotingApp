@@ -3,6 +3,8 @@ import Bar from './components/bar/bar';
 import { partiesReducer, initialState, LOAD_DATA, ADD_VOTE } from './reducer';
 import './App.css';
 
+const url = process.env.NODE_ENV === "development" ? "http://localhost:4001/api" : "/api"
+
 export const enumParties = {
   LABOUR: "LABOUR",
   CONSERVATIVES: "CONSERVATIVES",
@@ -12,23 +14,12 @@ export const enumParties = {
   OTHER: "OTHER",
 };
 
-const makeRequest = (party) => {
-  const opts = {
-    method:"POST",
-    headers: { 'Content-type': 'application/json'},
-    body: JSON.stringify({party}),
-  }
-  fetch("http://localhost:4001/api", opts)
-    .then(res => res.ok)
-    .catch(err => console.log(err))
-};
-
 function App() {
 
   const [state, dispatch] = React.useReducer(partiesReducer, initialState)
 
   React.useEffect(() => {
-    fetch("http://localhost:4001/api", {Accept: "application/json"})
+    fetch(url, {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {
@@ -40,7 +31,20 @@ function App() {
   }, []);
 
   const weight = window.innerWidth
-  const [isDisabled, handleIsDisabled] = React.useState(false)
+
+  const [isDisabled, handleIsDisabled] = React.useState(false);
+
+  const makeRequest = (party) => {
+    const opts = {
+      method:"POST",
+      headers: { 'Content-type': 'application/json'},
+      body: JSON.stringify({party}),
+    }
+    fetch(url, opts)
+      .then(res => res.ok)
+      .catch(err => console.log(err))
+  };
+  
 
   const setDisabled = () => {
     handleIsDisabled(true);
