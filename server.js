@@ -1,6 +1,7 @@
 const express = require ('express');
 const mongoose = require('mongoose');
 const Party = require('./server/models');
+const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
@@ -9,7 +10,7 @@ const db = process.env.MONGO_URI;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, '/client/build')));
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
