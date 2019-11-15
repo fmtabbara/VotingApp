@@ -5,7 +5,8 @@ import './App.css';
 export const parties = {
   LABOUR: "LABOUR",
   CONSERVATIVES: "CONSERVATIVES",
-  LIBDEMS: "LIBDEMS"
+  LIBDEMS: "LIBDEMS",
+  GREENS: "GREENS",
 };
 
 const makeRequest = (party) => {
@@ -36,6 +37,9 @@ function App() {
               } else if (item.name === parties.LIBDEMS) {
                 handleVoteYellow(item.votes)
                 totalVotes += item.votes
+              } else if (item.name === parties.GREENS) {
+                handleVoteGreen(item.votes)
+                totalVotes += item.votes
               }
             })
             handleTotal(totalVotes);
@@ -51,6 +55,7 @@ function App() {
   const [voteRed, handleVoteRed] = React.useState(0);
   const [voteBlue, handleVoteBlue] = React.useState(0);
   const [voteYellow, handleVoteYellow] = React.useState(0);
+  const [voteGreen, handleVoteGreen] = React.useState(0);
   const [isDisabled, handleIsDisabled] = React.useState(false)
 
   const addVote = (party) => {
@@ -63,6 +68,9 @@ function App() {
     } else if (party === parties.LIBDEMS) {
       makeRequest(parties.LIBDEMS)
       handleVoteYellow(voteYellow + 1);
+    } else if (party === parties.GREENS) {
+      makeRequest(parties.GREENS)
+      handleVoteGreen(voteGreen + 1);
     }
   };
 
@@ -106,6 +114,14 @@ function App() {
             vote={voteYellow}
             background="#FFAE27"
             value={(voteYellow / total) * weight}
+          />
+           <Bar
+            isDisabled={isDisabled}
+            addVote={handleSelect}
+            party={parties.GREENS}
+            vote={voteGreen}
+            background="green"
+            value={(voteGreen / total) * weight}
           />
         </div>
         : "Loading..."}
