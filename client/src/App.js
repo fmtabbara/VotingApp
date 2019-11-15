@@ -1,11 +1,15 @@
 import React from 'react';
 import Bar from './components/bar/bar';
+import { partiesReducer, initialState, LOAD_DATA, ADD_VOTE } from './reducer';
 import './App.css';
 
-export const parties = {
+export const enumParties = {
   LABOUR: "LABOUR",
   CONSERVATIVES: "CONSERVATIVES",
-  LIBDEMS: "LIBDEMS"
+  LIBDEMS: "LIBDEMS",
+  GREEN: "GREEN",
+  BREXIT: "BREXIT",
+  OTHER: "OTHER",
 };
 
 const makeRequest = (party) => {
@@ -14,57 +18,29 @@ const makeRequest = (party) => {
     headers: { 'Content-type': 'application/json'},
     body: JSON.stringify({party}),
   }
-  fetch("/api", opts)
+  fetch("http://localhost:4001/api", opts)
     .then(res => res.ok)
     .catch(err => console.log(err))
 };
 
 function App() {
+
+  const [state, dispatch] = React.useReducer(partiesReducer, initialState)
+
   React.useEffect(() => {
-    fetch("/api", {Accept: "application/json"})
+    fetch("http://localhost:4001/api", {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {
-            let totalVotes = 0;
-            data.forEach(item => {
-              if (item.name === parties.LABOUR) {
-                handleVoteRed(item.votes)
-                totalVotes += item.votes
-              } else if (item.name === parties.CONSERVATIVES) {
-                handleVoteBlue(item.votes)
-                totalVotes += item.votes
-              } else if (item.name === parties.LIBDEMS) {
-                handleVoteYellow(item.votes)
-                totalVotes += item.votes
-              }
-            })
-            handleTotal(totalVotes);
+            dispatch({type: LOAD_DATA, data})
           })
           .catch(err => console.log(err));
-          handleIsInitialised(true)
       })
       .catch(err => console.log(err));
   }, []);
-  const weight = window.innerWidth
-  const [isInitialised, handleIsInitialised] = React.useState(false)
-  const [total, handleTotal] = React.useState(1);
-  const [voteRed, handleVoteRed] = React.useState(0);
-  const [voteBlue, handleVoteBlue] = React.useState(0);
-  const [voteYellow, handleVoteYellow] = React.useState(0);
-  const [isDisabled, handleIsDisabled] = React.useState(false)
 
-  const addVote = (party) => {
-    if (party === parties.LABOUR) {
-      makeRequest(parties.LABOUR)
-      return handleVoteRed(voteRed + 1);
-    } else if (party === parties.CONSERVATIVES) {
-      makeRequest(parties.CONSERVATIVES)
-      return handleVoteBlue(voteBlue + 1);
-    } else if (party === parties.LIBDEMS) {
-      makeRequest(parties.LIBDEMS)
-      handleVoteYellow(voteYellow + 1);
-    }
-  };
+  const weight = window.innerWidth
+  const [isDisabled, handleIsDisabled] = React.useState(false)
 
   const setDisabled = () => {
     handleIsDisabled(true);
@@ -72,41 +48,31 @@ function App() {
 
   const handleSelect = ({ target: { name, checked } }) => {
     if (checked) {
-      handleTotal(total + 1);
-      addVote(name);
+      dispatch({type: ADD_VOTE, party: name})
+      makeRequest(name)
       setDisabled(true);
     }
   };
+
   return (
     <div className="App">
       <div className="content" style={{left: weight/4}}>
-        <div className="title">The People's Poll</div>
-        {isInitialised ?
+        <div className="title">The People's Poll - UK General Election 2019</div>
+        {state.isInitialised ?
         <div className="bar-chart">
-          <Bar
-            isDisabled={isDisabled}
-            addVote={handleSelect}
-            party={parties.CONSERVATIVES}
-            vote={voteBlue}
-            background="#0066ff"
-            value={(voteBlue / total) * weight}
-          />
-          <Bar
-            isDisabled={isDisabled}
-            addVote={handleSelect}
-            party={parties.LABOUR}
-            background="#E4003B"
-            vote={voteRed}
-            value={(voteRed / total) * weight}
-          />
-          <Bar
-            isDisabled={isDisabled}
-            addVote={handleSelect}
-            party={parties.LIBDEMS}
-            vote={voteYellow}
-            background="#FFAE27"
-            value={(voteYellow / total) * weight}
-          />
+          {state.parties.map((party, index) => {
+            return (
+              <Bar
+                isDisabled={isDisabled}
+                addVote={handleSelect}
+                party={party.name}
+                vote={party.votes}
+                background={party.color}
+                value={(party.votes / state.totalVotes) * weight}
+                key={index}
+              />
+            )
+          })}
         </div>
         : "Loading..."}
       </div>
