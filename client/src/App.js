@@ -120,7 +120,7 @@ function App() {
             addVote={handleSelect}
             party={parties.GREENS}
             vote={voteGreen}
-            background="green"
+            background="#6ab023"
             value={(voteGreen / total) * weight}
           />
         </div>
