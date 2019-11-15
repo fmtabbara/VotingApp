@@ -3,7 +3,7 @@ import './share-buttons.css';
 
 export const ShareButtons = () => {
   const url = "https://peoples-poll-2019.herokuapp.com/";
-  const text = "Have your same on the People's Poll for the UK General Election 2019"
+  const text = "Have your say on the People's Poll for the UK General Election 2019"
   const textEncoded = encodeURI(text);
   return (
     <div className="share-buttons">

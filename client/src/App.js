@@ -66,8 +66,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className="content" style={{left: weight/3}}>
-        <div className="title">The People's Poll - UK General Election 2019</div>
+      <div className="content" style={{left: weight < 600 ? weight/5 : weight/3}}>
+        <div className="title">The People's Poll<br />UK General Election 2019</div>
         {state.isInitialised ?
         <div className="bar-chart">
           {state.parties.map((party, index) => {
