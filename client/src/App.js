@@ -17,7 +17,7 @@ const makeRequest = (party) => {
   fetch("/api", opts)
     .then(res => res.ok)
     .catch(err => console.log(err))
-}
+};
 
 function App() {
   React.useEffect(() => {
