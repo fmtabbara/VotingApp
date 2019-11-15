@@ -14,14 +14,14 @@ const makeRequest = (party) => {
     headers: { 'Content-type': 'application/json'},
     body: JSON.stringify({party}),
   }
-  fetch("/", opts)
+  fetch("/api", opts)
     .then(res => res.ok)
     .catch(err => console.log(err))
 }
 
 function App() {
   React.useEffect(() => {
-    fetch("/", {Accept: "application/json"})
+    fetch("/api", {Accept: "application/json"})
       .then(res => {
         res.json()
           .then(data => {

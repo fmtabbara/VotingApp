@@ -15,7 +15,7 @@ mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   Party.find({}, (err, data) => {
     if (data) {
       res.send(data);
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   })
 });
 
-app.post('/', (req, res) => {
+app.post('/api', (req, res) => {
   const party = req.body.party;
   Party.findOneAndUpdate({name: party}, {$inc: {votes: 1}}, (err, success) => {
     if (err) {
