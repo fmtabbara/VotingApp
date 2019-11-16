@@ -18,11 +18,13 @@ export const enumParties = {
 
 function App() {
 
-  const [state, dispatch] = React.useReducer(partiesReducer, initialState)
+  const [state, dispatch] = React.useReducer(partiesReducer, initialState);
+
   React.useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize)
   })
+
   React.useEffect(() => {
     fetch(url, {Accept: "application/json"})
       .then(res => {
@@ -35,11 +37,22 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
+  React.useEffect(() => checkStorage(), []);
+
   
   const [weight, handleWeight] = React.useState(window.innerWidth)
   const [isDisabled, handleIsDisabled] = React.useState(false);
 
   const handleResize = () => handleWeight(window.innerWidth);
+
+  const checkStorage = () => {
+    const hasVoted = localStorage.getItem("hasVoted");
+    if (hasVoted) {
+      setDisabled(true);
+    }
+  }
+
+  const setLocalStorage = () => localStorage.setItem("hasVoted", true);
 
   const makeRequest = (party) => {
     const opts = {
@@ -61,12 +74,13 @@ function App() {
       dispatch({type: ADD_VOTE, party: name})
       makeRequest(name)
       setDisabled(true);
+      setLocalStorage()
     }
   };
 
   return (
     <div className="App">
-      <div className="content" style={{left: weight < 600 ? weight/5 : weight/3}}>
+      <div className="content" style={{left: weight < 600 ? weight/5 : weight/4}}>
         <div className="title">The People's Poll<br />UK General Election 2019</div>
         {state.isInitialised ?
         <div className="bar-chart">

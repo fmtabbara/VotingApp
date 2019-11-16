@@ -12,6 +12,7 @@ export const initialState = {
   ],
   totalVotes: 1,
   isInitialised: false,
+  hasVoted: false,
 }
 
 export const partiesReducer = (state, action) => {
