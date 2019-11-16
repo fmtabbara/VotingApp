@@ -10,11 +10,8 @@ const db = process.env.MONGO_URI;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, 'client/build'), {
-  etag: false,
-  maxAge: 1000,
-}));
-app.disable('etag');
+app.use(express.static(path.resolve(__dirname, 'client/build')));
+
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
@@ -22,6 +19,7 @@ mongoose.connect(db, { useNewUrlParser: true })
 app.get('/api', (req, res) => {
   Party.find({}, (err, data) => {
     if (data) {
+      res.setHeader("Expires", new Date(Date.now() + 1000).toUTCString());
       res.send(data);
     }
   })
