@@ -42,17 +42,19 @@ function App() {
   
   const [weight, handleWeight] = React.useState(window.innerWidth)
   const [isDisabled, handleIsDisabled] = React.useState(false);
+  const [hasVoted, handleHasVoted] = React.useState()
 
   const handleResize = () => handleWeight(window.innerWidth);
 
   const checkStorage = () => {
-    const hasVoted = localStorage.getItem("hasVoted");
-    if (hasVoted) {
+    const party = localStorage.getItem("hasVoted");
+    if (party) {
       setDisabled(true);
+      handleHasVoted(party)
     }
   }
 
-  const setLocalStorage = () => localStorage.setItem("hasVoted", true);
+  const setLocalStorage = (name) => localStorage.setItem("hasVoted", name);
 
   const makeRequest = (party) => {
     const opts = {
@@ -74,7 +76,8 @@ function App() {
       dispatch({type: ADD_VOTE, party: name})
       makeRequest(name)
       setDisabled(true);
-      setLocalStorage()
+      setLocalStorage(name)
+      handleHasVoted(name)
     }
   };
 
@@ -94,6 +97,7 @@ function App() {
                 background={party.color}
                 value={(party.votes / state.totalVotes) * weight}
                 key={index}
+                checked={hasVoted === party.name}
               />
             )
           })}
