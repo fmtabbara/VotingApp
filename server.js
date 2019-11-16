@@ -12,6 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, 'client/build'), {
   etag: false,
+  maxAge: 1000,
 }));
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
