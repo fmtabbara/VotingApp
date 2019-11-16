@@ -14,6 +14,7 @@ app.use(express.static(path.resolve(__dirname, 'client/build'), {
   etag: false,
   maxAge: 1000,
 }));
+app.disable('etag');
 mongoose.connect(db, { useNewUrlParser: true })
   .then((res) =>  console.log("Connected to the database"))
   .catch((err) => console.log(err))
